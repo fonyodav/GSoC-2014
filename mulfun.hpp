@@ -1,6 +1,7 @@
 #include <vector>
 #include <linbox/matrix/blas-matrix.h>
-#include <linbox/matrix/matrix-domain.h>
+#include "linbox/algorithms/blas-domain.h"
+
 
 
 
@@ -11,6 +12,7 @@ void efmul(const Field& F,
 		const std::vector<LinBox::BlasMatrix<Field> >& B,
 		const std::vector<typename Field::Element>& P)
 {
+	
 	std::vector<LinBox::BlasMatrix<Field> > tempC (A.size()+B.size()-1,
 			LinBox::BlasMatrix<Field> (F, A[0].rowdim(), B[0].coldim()));
 
@@ -19,10 +21,11 @@ void efmul(const Field& F,
 	C = std::vector<LinBox::BlasMatrix<Field> >(P.size()-1,
 				LinBox::BlasMatrix<Field>(F,A[0].rowdim(),B[0].coldim()));
 
+	LinBox::BlasMatrixDomain<Field> BMD(F);
 	LinBox::MatrixDomain<Field> MD(F);
 	for(unsigned int i=0; i < A.size(); ++i) {
 		for(unsigned int j=0; j < B.size(); ++j) {
-			MD.axpyin(tempC[i+j],A[i],B[j]);
+			BMD.axpyin(tempC[i+j],A[i],B[j]);
 		}
 	}
 
@@ -36,7 +39,7 @@ void efmul(const Field& F,
 		{
 			F.neg(c,P[k]);
 			MD.mul(tempM,tempC[i],c);
-			MD.addin(tempC[j+k],tempM);
+			BMD.addin(tempC[j+k],tempM);
 		}
 		--i;
 	}
