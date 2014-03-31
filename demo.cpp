@@ -12,7 +12,7 @@
 int main()
 {
 	const int P=7;  			// characteristic of the field
-	const int K=3;				// power of p in the order of the field
+	const int K=4;				// power of p in the order of the field
 	const int M=2;				// row-dimension of A
 	const int N=3;				// coloumn-dimension of A and row-dimension of B
 	const int L=4;				// coloumn-dimension of B
